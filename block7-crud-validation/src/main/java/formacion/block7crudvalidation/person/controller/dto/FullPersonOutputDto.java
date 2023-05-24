@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FullPersonOutputDto extends PersonOutputDto{
-    Teacher teacher;
-    Student student;
+public class FullPersonOutputDto extends PersonOutputDto {
+    Integer id_teacher;
+    Integer id_student;
 }

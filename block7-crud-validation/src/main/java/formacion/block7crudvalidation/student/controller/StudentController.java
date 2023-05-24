@@ -20,7 +20,7 @@ public class StudentController {
     StudentServiceImpl studentService;
 
     @PostMapping
-    public ResponseEntity<StudentOutputDto> addStudent(@RequestBody StudentInputDto student) {
+    public ResponseEntity<SimpleStudentOutputDto> addStudent(@RequestBody StudentInputDto student) {
         try {
             URI location = URI.create("/student");
             return ResponseEntity.created(location).body(studentService.addStudent(student));
@@ -35,10 +35,10 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<SimpleStudentOutputDto> getStudentById(@PathVariable int id, @RequestParam(defaultValue = "simple") String outputType) {
         try {
-            if (outputType.equals("simple"))
-                return ResponseEntity.ok().body(studentService.getSimpleStudentById(id));
+            if (!outputType.equals("simple"))
+                return ResponseEntity.ok().body(studentService.getStudentById(id));
 
-            return ResponseEntity.ok().body(studentService.getStudentById(id));
+            return ResponseEntity.ok().body(studentService.getSimpleStudentById(id));
 
         } catch (Exception e) {
             System.out.println(e);

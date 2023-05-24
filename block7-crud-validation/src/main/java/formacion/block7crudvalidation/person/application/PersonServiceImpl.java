@@ -78,16 +78,16 @@ public class PersonServiceImpl implements PersonService {
 
         if (!optionalTeacher.isEmpty()) {
             teacher = optionalTeacher.get();
-            teacher.setPerson(null);
+            aux.setId_teacher(teacher.getIdProfesor());
+
         }
 
         if (!optionalStudent.isEmpty()) {
             student = optionalStudent.get();
-            student.setPersona(null);
+            aux.setId_student(student.getId_student());
+
         }
 
-        aux.setTeacher(teacher);
-        aux.setStudent(student);
 
         return aux;
 

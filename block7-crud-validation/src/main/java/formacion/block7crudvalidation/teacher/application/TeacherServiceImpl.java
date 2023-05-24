@@ -50,7 +50,7 @@ public class TeacherServiceImpl implements TeacherService {
         t.setBranch(teacher.getBranch());
         t.setComents(teacher.getComents());
 
-        return teacherRepository.save(t).teacherToTeacherOutputDto();
+        return teacherRepository.save(t).teacherToSimpleTeacherOutputDto();
 
     }
 
@@ -102,7 +102,7 @@ public class TeacherServiceImpl implements TeacherService {
         Person person = personRepository.findById(teacher.getId_persona()).get();
         Optional<Student> aux = studentRepository.findByPersona(person);
         if (!aux.isEmpty())
-            throw new UnprocessableEntityException("Ya existe un profesor con el id de persona: " + teacher.getId_persona(), HttpStatus.UNPROCESSABLE_ENTITY.value(), LocalDateTime.now());
+            throw new UnprocessableEntityException("Ya existe un alumno con el id de persona: " + teacher.getId_persona(), HttpStatus.UNPROCESSABLE_ENTITY.value(), LocalDateTime.now());
     }
 
     private void comprobarProfesorExistente(TeacherInputDto teacher) throws UnprocessableEntityException {

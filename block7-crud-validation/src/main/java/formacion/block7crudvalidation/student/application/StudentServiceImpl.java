@@ -9,10 +9,14 @@ import formacion.block7crudvalidation.student.controller.dto.StudentInputDto;
 import formacion.block7crudvalidation.student.controller.dto.StudentOutputDto;
 import formacion.block7crudvalidation.student.domain.Student;
 import formacion.block7crudvalidation.student.repository.StudentRepository;
+import formacion.block7crudvalidation.teacher.domain.Teacher;
+import formacion.block7crudvalidation.teacher.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.apache.coyote.http11.Constants.a;
 
@@ -25,30 +29,32 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     PersonRepository personRepository;
 
+    @Autowired
+    TeacherRepository teacherRepository;
+
     @Override
-    public StudentOutputDto addStudent(StudentInputDto student) throws UnprocessableEntityException, EntityNotFoundException {
-        if (student.getId_persona() == null)
-            throw new UnprocessableEntityException("El campo id persona es requerido", 442, LocalDateTime.now());
+    public SimpleStudentOutputDto addStudent(StudentInputDto student) throws UnprocessableEntityException, EntityNotFoundException {
 
-        if (student.getNum_hours_week() == null)
-            throw new UnprocessableEntityException("El campo num hours week es requerido", 442, LocalDateTime.now());
+        // 1º Comprobamos los campos que le tenemos que pasar que no sean nulos
+        comprobarAlumno(student);
+        // 2º Comprobamos si la persona existe
+        comprobarPesona(student);
+        // 3º Comprobamos si la persona es ya profesor
+        comprobarProfesorExistente(student);
+        // 4º Comprobamos si la persona ya es un alumno
+        comprobarAlumnoExistente(student);
 
-        if (student.getBranch() == null)
-            throw new UnprocessableEntityException("El campo brank es requerido", 442, LocalDateTime.now());
-
+        // 5º Lo almacenamos en un objeto tipo Teacher
         Student s = new Student();
-        Person p = personRepository.findById(student.getId_persona()).orElseThrow(() -> new EntityNotFoundException("No se ha encontrado ninguna persona con el id: " + student.getId_persona(), 404, LocalDateTime.now()));
-
-
-
-        s.setPersona(p);
+        Person person = personRepository.findById(student.getId_persona()).get();
+        s.setPersona(person);
+        s.setId_student(student.getId_student());
         s.setNum_hours_week(student.getNum_hours_week());
         s.setComents(student.getComents());
         s.setBranch(student.getBranch());
 
-        return studentRepository.save(s).studentToStudentOutputDto();
+        return studentRepository.save(s).simpleStudentToStudentOutputDto();
     }
-
 
     @Override
     public StudentOutputDto getStudentById(int id) throws EntityNotFoundException {
@@ -80,4 +86,38 @@ public class StudentServiceImpl implements StudentService {
 
         return null;
     }
+
+
+    private void comprobarAlumnoExistente(StudentInputDto student) throws UnprocessableEntityException {
+        Person person = personRepository.findById(student.getId_persona()).get();
+        Optional<Teacher> aux = teacherRepository.findByPerson(person);
+        if (!aux.isEmpty())
+            throw new UnprocessableEntityException("Ya existe un profesor con el id de persona: " + student.getId_persona(), HttpStatus.UNPROCESSABLE_ENTITY.value(), LocalDateTime.now());
+    }
+
+    private void comprobarProfesorExistente(StudentInputDto student) throws UnprocessableEntityException {
+        Person person = personRepository.findById(student.getId_persona()).get();
+        Optional<Teacher> aux = teacherRepository.findByPerson(person);
+        if (!aux.isEmpty())
+            throw new UnprocessableEntityException("Ya existe un profesor con el id de persona: " + student.getId_persona(), HttpStatus.UNPROCESSABLE_ENTITY.value(), LocalDateTime.now());
+    }
+
+    private void comprobarPesona(StudentInputDto student) throws EntityNotFoundException {
+        Optional<Person> person = personRepository.findById(student.getId_persona());
+        if (person.isEmpty())
+            throw new EntityNotFoundException("No existe la persona con el id: " + student.getId_persona(), HttpStatus.NOT_FOUND.value(), LocalDateTime.now());
+    }
+
+    private void comprobarAlumno(StudentInputDto student) throws UnprocessableEntityException {
+        if (student.getId_persona() == null)
+            throw new UnprocessableEntityException("El campo id persona es requerido", 442, LocalDateTime.now());
+
+        if (student.getNum_hours_week() == null)
+            throw new UnprocessableEntityException("El campo num hours week es requerido", 442, LocalDateTime.now());
+
+        if (student.getBranch() == null)
+            throw new UnprocessableEntityException("El campo brank es requerido", 442, LocalDateTime.now());
+
+    }
+
 }

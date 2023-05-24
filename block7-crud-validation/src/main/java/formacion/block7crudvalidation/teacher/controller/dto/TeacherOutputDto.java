@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TeacherOutputDto extends SimpleTeacherOutputDto {
-    Person persona;
+    Integer id_persona;
 }

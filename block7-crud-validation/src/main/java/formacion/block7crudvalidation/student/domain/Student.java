@@ -1,5 +1,6 @@
 package formacion.block7crudvalidation.student.domain;
 
+import formacion.block7crudvalidation.asignatura.domain.Asignatura;
 import formacion.block7crudvalidation.person.domain.Person;
 import formacion.block7crudvalidation.student.controller.dto.SimpleStudentOutputDto;
 import formacion.block7crudvalidation.student.controller.dto.StudentInputDto;
@@ -10,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Estudiante")
@@ -33,18 +36,11 @@ public class Student {
     @Column(name = "comentarios")
     String coments;
 
-
     @NotNull
     String branch;
-/*
-    @ManyToOne
-    @JoinColumn(name = "id_profesor")
-    Profesor profesor;
-*/
 
-
-/*    @OneToMany
-    List<Asignatura> asignaturas;*/
+    @ManyToMany
+    List<Asignatura> asignaturas;
 
     public Student(StudentInputDto studentInputDto) {
         this.id_student = studentInputDto.getId_student();
@@ -57,10 +53,11 @@ public class Student {
         StudentOutputDto studentOutputDto = new StudentOutputDto();
 
         studentOutputDto.setId_student(this.id_student);
-        studentOutputDto.setPersona(this.persona);
+        studentOutputDto.setId_persona(this.persona.getId());
         studentOutputDto.setNum_hours_week(this.num_hours_week);
         studentOutputDto.setComents(this.coments);
         studentOutputDto.setBranch(this.branch);
+        studentOutputDto.setAsignaturas(this.asignaturas);
 
         return studentOutputDto;
     }
