@@ -16,8 +16,14 @@ public class AsignaturaController {
 
     @Autowired
     AsignaturaServiceImpl asignaturaService;
+
+    @GetMapping
+    public Iterable<AsignaturaOutputDto> getAllAsignaturas() {
+        return asignaturaService.getAllAsignaturas();
+    }
+
     @PostMapping
-    public ResponseEntity<AsignaturaOutputDto> addAsignatura(@RequestBody AsignaturaInputDto asignaturaInputDto){
+    public ResponseEntity<AsignaturaOutputDto> addAsignatura(@RequestBody AsignaturaInputDto asignaturaInputDto) {
         try {
             URI location = URI.create("/asignatura");
             return ResponseEntity.created(location).body(asignaturaService.añadirAsignatura(asignaturaInputDto));

@@ -29,6 +29,9 @@ public class AsignaturaServiceImpl implements AsignaturaService {
         return asignaturaRepository.save(asignatura).asignaturaToAsignaturaOutputDto();
     }
 
+    public List<AsignaturaOutputDto> getAllAsignaturas(){
+        return asignaturaRepository.findAll().stream().map(Asignatura::asignaturaToAsignaturaOutputDto).toList();
+    }
     private Asignatura asignaturaInputDtoToEntity(AsignaturaInputDto asignaturaInputDto) throws EntityNotFoundException {
         Asignatura asignatura = new Asignatura();
         List<Student> estudiantes = new ArrayList<>();

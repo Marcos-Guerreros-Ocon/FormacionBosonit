@@ -42,7 +42,7 @@ public class Teacher {
         TeacherOutputDto teacherOutputDto = new TeacherOutputDto();
 
         teacherOutputDto.setIdProfesor(this.idProfesor);
-        teacherOutputDto.setPersona(this.person);
+        teacherOutputDto.setId_persona(this.person.getId());
         teacherOutputDto.setComents(this.coments);
         teacherOutputDto.setBranch(this.branch);
 
