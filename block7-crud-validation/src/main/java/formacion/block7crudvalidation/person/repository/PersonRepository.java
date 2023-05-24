@@ -1,6 +1,6 @@
-package formacion.block7crudvalidation.repository;
+package formacion.block7crudvalidation.person.repository;
 
-import formacion.block7crudvalidation.domain.Person;
+import formacion.block7crudvalidation.person.domain.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
