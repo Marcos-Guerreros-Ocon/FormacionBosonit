@@ -66,7 +66,6 @@ public class Person {
     Student student;
 
     public Person(PersonInputDto personInputDto) {
-        this.id = personInputDto.getId();
         this.usuario = personInputDto.getUsuario();
         this.password = personInputDto.getPassword();
         this.name = personInputDto.getName();

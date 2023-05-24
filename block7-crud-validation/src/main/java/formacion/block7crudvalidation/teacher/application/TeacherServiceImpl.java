@@ -46,7 +46,6 @@ public class TeacherServiceImpl implements TeacherService {
         Teacher t = new Teacher();
         Person person = personRepository.findById(teacher.getId_persona()).get();
         t.setPerson(person);
-        t.setIdProfesor(teacher.getId_profesor());
         t.setBranch(teacher.getBranch());
         t.setComents(teacher.getComents());
 

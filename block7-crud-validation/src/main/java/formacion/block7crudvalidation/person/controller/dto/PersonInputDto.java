@@ -13,8 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class PersonInputDto {
 
-    private int id;
-
     private String usuario;
 
     private String password;

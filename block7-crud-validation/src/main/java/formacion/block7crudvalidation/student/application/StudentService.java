@@ -10,6 +10,8 @@ public interface StudentService {
 
     SimpleStudentOutputDto getStudentById(int id) throws EntityNotFoundException;
 
+    public SimpleStudentOutputDto getSimpleStudentById(int id) throws EntityNotFoundException;
+
     void deleteStudentById(int id) throws EntityNotFoundException;
 
     Iterable<SimpleStudentOutputDto> getAllStudent();

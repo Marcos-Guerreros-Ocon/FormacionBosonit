@@ -18,6 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentOutputDto extends SimpleStudentOutputDto{
     Integer id_persona;
-    List<Asignatura> asignaturas;
+    Asignatura asignatura;
 
 }

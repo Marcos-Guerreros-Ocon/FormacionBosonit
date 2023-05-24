@@ -1,8 +1,8 @@
 package formacion.block7crudvalidation.teacher.controller;
 
 import formacion.block7crudvalidation.exception.*;
+import formacion.block7crudvalidation.teacher.application.TeacherService;
 import formacion.block7crudvalidation.teacher.controller.dto.*;
-import formacion.block7crudvalidation.teacher.application.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.net.URI;
 @RequestMapping("/teacher")
 public class TeacherController {
     @Autowired
-    TeacherServiceImpl teacherService;
+    TeacherService teacherService;
 
 
     @GetMapping

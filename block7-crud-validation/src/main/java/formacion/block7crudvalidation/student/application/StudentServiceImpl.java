@@ -48,7 +48,6 @@ public class StudentServiceImpl implements StudentService {
         Student s = new Student();
         Person person = personRepository.findById(student.getId_persona()).get();
         s.setPersona(person);
-        s.setId_student(student.getId_student());
         s.setNum_hours_week(student.getNum_hours_week());
         s.setComents(student.getComents());
         s.setBranch(student.getBranch());
@@ -61,7 +60,7 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Estudiante no encontrado con id: " + id, 404, LocalDateTime.now())).studentToStudentOutputDto();
 
     }
-
+    @Override
     public SimpleStudentOutputDto getSimpleStudentById(int id) throws EntityNotFoundException {
         return studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Estudiante no encontrado con id: " + id, 404, LocalDateTime.now())).simpleStudentToStudentOutputDto();
     }

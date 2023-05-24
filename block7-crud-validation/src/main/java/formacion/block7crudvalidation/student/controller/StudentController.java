@@ -2,6 +2,7 @@ package formacion.block7crudvalidation.student.controller;
 
 
 import formacion.block7crudvalidation.exception.EntityNotFoundException;
+import formacion.block7crudvalidation.student.application.StudentService;
 import formacion.block7crudvalidation.student.application.StudentServiceImpl;
 import formacion.block7crudvalidation.student.controller.dto.SimpleStudentOutputDto;
 import formacion.block7crudvalidation.student.controller.dto.StudentInputDto;
@@ -17,7 +18,7 @@ import java.net.URI;
 public class StudentController {
 
     @Autowired
-    StudentServiceImpl studentService;
+    StudentService studentService;
 
     @PostMapping
     public ResponseEntity<SimpleStudentOutputDto> addStudent(@RequestBody StudentInputDto student) {

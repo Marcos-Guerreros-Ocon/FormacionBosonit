@@ -1,6 +1,6 @@
 package formacion.block7crudvalidation.person.controller;
 
-import formacion.block7crudvalidation.person.application.PersonServiceImpl;
+import formacion.block7crudvalidation.person.application.PersonService;
 import formacion.block7crudvalidation.person.controller.dto.PersonInputDto;
 import formacion.block7crudvalidation.person.controller.dto.PersonOutputDto;
 import formacion.block7crudvalidation.exception.EntityNotFoundException;
@@ -16,7 +16,7 @@ import java.net.URI;
 public class PersonController {
 
     @Autowired
-    PersonServiceImpl personService;
+    PersonService personService;
 
 
     @GetMapping

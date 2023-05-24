@@ -39,11 +39,10 @@ public class Student {
     @NotNull
     String branch;
 
-    @ManyToMany
-    List<Asignatura> asignaturas;
+    @ManyToOne
+    Asignatura asignaturas;
 
     public Student(StudentInputDto studentInputDto) {
-        this.id_student = studentInputDto.getId_student();
         this.num_hours_week = studentInputDto.getNum_hours_week();
         this.coments = studentInputDto.getComents();
         this.branch = studentInputDto.getBranch();
@@ -57,7 +56,7 @@ public class Student {
         studentOutputDto.setNum_hours_week(this.num_hours_week);
         studentOutputDto.setComents(this.coments);
         studentOutputDto.setBranch(this.branch);
-        studentOutputDto.setAsignaturas(this.asignaturas);
+        studentOutputDto.setAsignatura(this.asignaturas);
 
         return studentOutputDto;
     }

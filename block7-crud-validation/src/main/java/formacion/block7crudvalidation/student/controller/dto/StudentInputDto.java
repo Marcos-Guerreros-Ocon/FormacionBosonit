@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentInputDto {
-    Integer id_student;
+
     Integer id_persona;
     Integer num_hours_week;
     String coments;

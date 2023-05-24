@@ -3,10 +3,7 @@ package formacion.block7crudvalidation.asignatura.domain;
 import formacion.block7crudvalidation.asignatura.controller.dto.AsignaturaInputDto;
 import formacion.block7crudvalidation.asignatura.controller.dto.AsignaturaOutputDto;
 import formacion.block7crudvalidation.student.domain.Student;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +27,7 @@ public class Asignatura {
     String coments;
     Date initial_date;
     Date finish_date;
-    @ManyToMany(mappedBy = "asignaturas")
+    @OneToMany(mappedBy = "asignaturas")
     List<Student> estudiantes;
 
     public AsignaturaOutputDto asignaturaToAsignaturaOutputDto() {

@@ -1,6 +1,7 @@
 package formacion.block7crudvalidation.person.controller.dto;
 
 import formacion.block7crudvalidation.student.domain.Student;
+import formacion.block7crudvalidation.teacher.controller.dto.SimpleTeacherOutputDto;
 import formacion.block7crudvalidation.teacher.domain.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FullPersonOutputDto extends PersonOutputDto {
-    Integer id_teacher;
+    SimpleTeacherOutputDto teacher;
     Integer id_student;
 }

@@ -67,6 +67,7 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Persona no encotrada con el id " + id, 404, LocalDateTime.now())).personToPersonOutputDto();
     }
 
+    @Override
     public FullPersonOutputDto getFullPersonById(int id) throws EntityNotFoundException {
         Person p = personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Persona no encotrada con el id " + id, 404, LocalDateTime.now()));
 
@@ -78,7 +79,7 @@ public class PersonServiceImpl implements PersonService {
 
         if (!optionalTeacher.isEmpty()) {
             teacher = optionalTeacher.get();
-            aux.setId_teacher(teacher.getIdProfesor());
+            aux.setTeacher(teacher.teacherToSimpleTeacherOutputDto());
 
         }
 

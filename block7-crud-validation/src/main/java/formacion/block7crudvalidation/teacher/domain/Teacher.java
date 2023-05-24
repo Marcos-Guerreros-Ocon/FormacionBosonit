@@ -33,7 +33,6 @@ public class Teacher {
 
     public Teacher(TeacherInputDto teacherInputDto) {
 
-        this.idProfesor = teacherInputDto.getId_profesor();
         this.coments = teacherInputDto.getComents();
         this.branch = teacherInputDto.getBranch();
     }
