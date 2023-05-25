@@ -1,5 +1,6 @@
 package formacion.block7crudvalidation.person.controller;
 
+import formacion.block7crudvalidation.exception.UnprocessableEntityException;
 import formacion.block7crudvalidation.person.application.PersonService;
 import formacion.block7crudvalidation.person.controller.dto.PersonInputDto;
 import formacion.block7crudvalidation.person.controller.dto.PersonOutputDto;
@@ -18,7 +19,6 @@ public class PersonController {
     @Autowired
     PersonService personService;
 
-
     @GetMapping
     public Iterable<PersonOutputDto> getAllPeople() {
         return personService.getAllPerson();
@@ -29,7 +29,7 @@ public class PersonController {
 
 
         try {
-            if (!outputType.equals("simple")) {
+            if (outputType.equals("full")) {
                 return ResponseEntity.ok().body(personService.getFullPersonById(id));
             }
             return ResponseEntity.ok().body(personService.getPersonById(id));
@@ -52,11 +52,9 @@ public class PersonController {
         URI location = URI.create("/person");
         try {
             return ResponseEntity.created(location).body(personService.addPerson(person));
-        } catch (ResponseStatusException e) {
-            System.out.println(e.getReason());
-            System.out.println(e.getMessage());
+        } catch (UnprocessableEntityException e) {
+            System.out.println(e);
             return ResponseEntity.badRequest().build();
-
         }
 
     }
@@ -68,6 +66,20 @@ public class PersonController {
         } catch (EntityNotFoundException e) {
             System.out.println(e);
             return ResponseEntity.notFound().build();
+        } catch (UnprocessableEntityException e) {
+            System.out.println(e);
+            return ResponseEntity.badRequest().build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> removePerson(@PathVariable int id) {
+        try {
+            personService.deletePersonById(id);
+            return ResponseEntity.ok().body("La persona con id: " + id + " ha sido borrado");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

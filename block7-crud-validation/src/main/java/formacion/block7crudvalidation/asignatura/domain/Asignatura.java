@@ -2,16 +2,21 @@ package formacion.block7crudvalidation.asignatura.domain;
 
 import formacion.block7crudvalidation.asignatura.controller.dto.AsignaturaInputDto;
 import formacion.block7crudvalidation.asignatura.controller.dto.AsignaturaOutputDto;
+import formacion.block7crudvalidation.asignatura.controller.dto.SimpleAsignaturaOutputDto;
+import formacion.block7crudvalidation.student.controller.dto.SimpleStudentOutputDto;
 import formacion.block7crudvalidation.student.domain.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -27,8 +32,8 @@ public class Asignatura {
     String coments;
     Date initial_date;
     Date finish_date;
-    @OneToMany(mappedBy = "asignaturas")
-    List<Student> estudiantes;
+    @ManyToMany(mappedBy = "asignaturas")
+    Set<Student> estudiantes;
 
     public AsignaturaOutputDto asignaturaToAsignaturaOutputDto() {
         AsignaturaOutputDto asignaturaOutputDto = new AsignaturaOutputDto();
@@ -38,13 +43,21 @@ public class Asignatura {
         asignaturaOutputDto.setComents(this.getComents());
         asignaturaOutputDto.setInitial_date(this.initial_date);
         asignaturaOutputDto.setFinish_date(this.finish_date);
-
-
-        List<Integer> estudiantes = new ArrayList<>();
-        this.estudiantes.forEach(es -> estudiantes.add(es.getId_student()));
+        List<SimpleStudentOutputDto> estudiantes = new ArrayList<>();
+        this.estudiantes.forEach(es -> estudiantes.add(es.simpleStudentToStudentOutputDto()));
         asignaturaOutputDto.setEstudiantes(estudiantes);
 
         return asignaturaOutputDto;
+    }
+
+    public SimpleAsignaturaOutputDto asignaturaToSimpleAsignaturaOutputDto() {
+        SimpleAsignaturaOutputDto simpleAsignaturaOutputDto = new SimpleAsignaturaOutputDto();
+        simpleAsignaturaOutputDto.setId_asignatura(this.id_asignatura);
+        simpleAsignaturaOutputDto.setAsignatura(this.getAsignatura());
+        simpleAsignaturaOutputDto.setComents(this.getComents());
+        simpleAsignaturaOutputDto.setInitial_date(this.initial_date);
+        simpleAsignaturaOutputDto.setFinish_date(this.finish_date);
+        return simpleAsignaturaOutputDto;
     }
 
 

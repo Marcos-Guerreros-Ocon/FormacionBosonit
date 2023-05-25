@@ -13,6 +13,5 @@ public class TeacherInputDto {
 
     Integer id_persona;
     String coments;
-
     String branch;
 }

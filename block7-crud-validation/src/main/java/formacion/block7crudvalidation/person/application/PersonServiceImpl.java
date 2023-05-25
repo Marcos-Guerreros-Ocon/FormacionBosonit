@@ -1,5 +1,6 @@
 package formacion.block7crudvalidation.person.application;
 
+import formacion.block7crudvalidation.exception.UnprocessableEntityException;
 import formacion.block7crudvalidation.person.controller.dto.FullPersonOutputDto;
 import formacion.block7crudvalidation.person.controller.dto.PersonInputDto;
 import formacion.block7crudvalidation.person.controller.dto.PersonOutputDto;
@@ -13,8 +14,7 @@ import formacion.block7crudvalidation.teacher.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -32,31 +32,31 @@ public class PersonServiceImpl implements PersonService {
     StudentRepository studentRepository;
 
     @Override
-    public PersonOutputDto addPerson(PersonInputDto person) {
+    public PersonOutputDto addPerson(PersonInputDto person) throws UnprocessableEntityException {
 
         if (person.getUsuario() == null)
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "El campo usuario no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo usuario no puede ser nulo.");
 
         if (person.getUsuario().length() < 6)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo usuario debe tener como minimo 6 caracteres.");
+            throw new UnprocessableEntityException("El campo usuario debe tener como minimo 6 caracteres.");
 
         if (person.getUsuario().length() > 10)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo usuario debe tener como maximo 10 caracteres.");
+            throw new UnprocessableEntityException("El campo usuario debe tener como maximo 10 caracteres.");
 
         if (person.getPassword() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo contraseña no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo contraseña no puede ser nulo.");
 
         if (person.getName() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo name no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo name no puede ser nulo.");
 
         if (person.getCompanyEmail() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo company email no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo company email no puede ser nulo.");
 
         if (person.getPersonalEmail() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo personal email no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo personal email no puede ser nulo.");
 
         if (person.getCreatedDate() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo created email no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo created email no puede ser nulo.");
 
         return personRepository.save(new Person(person)).personToPersonOutputDto();
     }
@@ -64,12 +64,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonOutputDto getPersonById(int id) throws EntityNotFoundException {
 
-        return personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Persona no encotrada con el id " + id, 404, LocalDateTime.now())).personToPersonOutputDto();
+        return personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Persona no encotrada con el id " + id)).personToPersonOutputDto();
     }
 
     @Override
     public FullPersonOutputDto getFullPersonById(int id) throws EntityNotFoundException {
-        Person p = personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Persona no encotrada con el id " + id, 404, LocalDateTime.now()));
+        Person p = personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Persona no encotrada con el id " + id));
 
         FullPersonOutputDto aux = p.personToFullOutputDto();
         Optional<Teacher> optionalTeacher = teacherRepository.findByPerson(p);
@@ -85,20 +85,15 @@ public class PersonServiceImpl implements PersonService {
 
         if (!optionalStudent.isEmpty()) {
             student = optionalStudent.get();
-            aux.setId_student(student.getId_student());
+            aux.setStudent(student.studentToStudentOutputDto());
 
         }
-
-
         return aux;
-
-
     }
 
     @Override
-    public void deletePersonById(int id) {
-        personRepository.findById(id).orElseThrow();
-
+    public void deletePersonById(int id) throws EntityNotFoundException {
+        personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Persona no encotrada con el id " + id));
         personRepository.deleteById(id);
     }
 
@@ -113,32 +108,32 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonOutputDto updatePerson(int id, PersonInputDto person) throws EntityNotFoundException {
+    public PersonOutputDto updatePerson(int id, PersonInputDto person) throws EntityNotFoundException, UnprocessableEntityException {
         Person p = personRepository.findById(id).get();
 
         if (p == null) {
-            throw new EntityNotFoundException("Persona no encontrada", 404, LocalDateTime.now());
+            throw new EntityNotFoundException("Persona no encontrada");
         }
         if (person.getUsuario() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo usuario no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo usuario no puede ser nulo.");
 
         if (person.getUsuario().length() < 6)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo usuario debe tener como minimo 6 caracteres.");
+            throw new UnprocessableEntityException("El campo usuario debe tener como minimo 6 caracteres.");
 
         if (person.getUsuario().length() > 10)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo usuario debe tener como maximo 10 caracteres.");
+            throw new UnprocessableEntityException("El campo usuario debe tener como maximo 10 caracteres.");
 
         if (person.getPassword() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo contraseña no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo contraseña no puede ser nulo.");
 
         if (person.getCompanyEmail() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo company email no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo company email no puede ser nulo.");
 
         if (person.getPersonalEmail() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo personal email no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo personal email no puede ser nulo.");
 
         if (person.getCreatedDate() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo created email no puede ser nulo.");
+            throw new UnprocessableEntityException("El campo created email no puede ser nulo.");
 
 
         p.setUsuario(person.getUsuario());

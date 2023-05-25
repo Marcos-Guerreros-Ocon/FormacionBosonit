@@ -1,6 +1,7 @@
 package formacion.block7crudvalidation.student.controller.dto;
 
 
+import formacion.block7crudvalidation.asignatura.controller.dto.SimpleAsignaturaOutputDto;
 import formacion.block7crudvalidation.asignatura.domain.Asignatura;
 import formacion.block7crudvalidation.person.domain.Person;
 import formacion.block7crudvalidation.student.domain.Student;
@@ -18,6 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentOutputDto extends SimpleStudentOutputDto{
     Integer id_persona;
-    Asignatura asignatura;
+    List<SimpleAsignaturaOutputDto> asignaturas;
 
 }

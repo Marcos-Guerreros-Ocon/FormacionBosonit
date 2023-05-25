@@ -1,9 +1,11 @@
 package formacion.block7crudvalidation.exception;
 
+import org.springframework.http.HttpStatus;
+
 import java.time.LocalDateTime;
 
 public class UnprocessableEntityException extends Exception{
-    public UnprocessableEntityException(String message, int httpCode, LocalDateTime timestamp) {
-        super("\nProblema: "+message+"\nCodigo:"+httpCode+"\nHora:"+timestamp);
+    public UnprocessableEntityException(String message) {
+        super("\nProblema: "+message+"\nCodigo:"+ HttpStatus.UNPROCESSABLE_ENTITY.value() +"\nHora:"+LocalDateTime.now());
     }
 }

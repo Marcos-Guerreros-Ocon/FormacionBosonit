@@ -1,6 +1,7 @@
 package formacion.block7crudvalidation.asignatura.controller.dto;
 
 
+import formacion.block7crudvalidation.student.controller.dto.SimpleStudentOutputDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AsignaturaOutputDto {
-    private Integer id_asignatura;
-    private String asignatura;
-    private String coments;
-    private Date initial_date;
-    private Date finish_date;
-    private List<Integer> estudiantes = new ArrayList<>();
+public class AsignaturaOutputDto extends SimpleAsignaturaOutputDto {
+
+    private List<SimpleStudentOutputDto> estudiantes;
 }

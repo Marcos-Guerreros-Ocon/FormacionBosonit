@@ -56,12 +56,12 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public SimpleTeacherOutputDto getTeacherById(int id) throws EntityNotFoundException {
-        return teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No existe un profesor con el id: " + id, HttpStatus.NOT_FOUND.value(), LocalDateTime.now())).teacherToSimpleTeacherOutputDto();
+        return teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No existe un profesor con el id: " + id)).teacherToSimpleTeacherOutputDto();
     }
 
     @Override
     public void deleteTeacherById(int id) throws EntityNotFoundException {
-        teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No existe un profesor con el id: " + id, HttpStatus.NOT_FOUND.value(), LocalDateTime.now()));
+        teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No existe un profesor con el id: " + id));
         teacherRepository.deleteById(id);
     }
 
@@ -72,7 +72,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public SimpleTeacherOutputDto updateTeacher(int id, TeacherInputDto newTeacher) throws EntityNotFoundException, UnprocessableEntityException {
-        Teacher oldTeacher = teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No existe un profesor con el id: " + id, HttpStatus.NOT_FOUND.value(), LocalDateTime.now()));
+        Teacher oldTeacher = teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No existe un profesor con el id: " + id));
         comprobarTeacher(newTeacher);
         comprobarPesona(newTeacher);
         comprobarAlumnoExistente(newTeacher);
@@ -86,29 +86,29 @@ public class TeacherServiceImpl implements TeacherService {
 
     private void comprobarTeacher(TeacherInputDto teacherInputDto) throws UnprocessableEntityException {
         if (teacherInputDto.getId_persona() == null)
-            throw new UnprocessableEntityException("El campo id persona es requerido", HttpStatus.UNPROCESSABLE_ENTITY.value(), LocalDateTime.now());
+            throw new UnprocessableEntityException("El campo id persona es requerido");
         if (teacherInputDto.getBranch() == null)
-            throw new UnprocessableEntityException("El campo branch es requerido", HttpStatus.UNPROCESSABLE_ENTITY.value(), LocalDateTime.now());
+            throw new UnprocessableEntityException("El campo branch es requerido");
     }
 
     private void comprobarPesona(TeacherInputDto teacher) throws EntityNotFoundException {
         Optional<Person> person = personRepository.findById(teacher.getId_persona());
         if (person.isEmpty())
-            throw new EntityNotFoundException("No existe la persona con el id: " + teacher.getId_persona(), HttpStatus.NOT_FOUND.value(), LocalDateTime.now());
+            throw new EntityNotFoundException("No existe la persona con el id: " + teacher.getId_persona());
     }
 
     private void comprobarAlumnoExistente(TeacherInputDto teacher) throws UnprocessableEntityException {
         Person person = personRepository.findById(teacher.getId_persona()).get();
         Optional<Student> aux = studentRepository.findByPersona(person);
         if (!aux.isEmpty())
-            throw new UnprocessableEntityException("Ya existe un alumno con el id de persona: " + teacher.getId_persona(), HttpStatus.UNPROCESSABLE_ENTITY.value(), LocalDateTime.now());
+            throw new UnprocessableEntityException("Ya existe un alumno con el id de persona: " + teacher.getId_persona());
     }
 
     private void comprobarProfesorExistente(TeacherInputDto teacher) throws UnprocessableEntityException {
         Person person = personRepository.findById(teacher.getId_persona()).get();
         Optional<Teacher> aux = teacherRepository.findByPerson(person);
         if (!aux.isEmpty())
-            throw new UnprocessableEntityException("Ya existe un profesor con el id de persona: " + teacher.getId_persona(), HttpStatus.UNPROCESSABLE_ENTITY.value(), LocalDateTime.now());
+            throw new UnprocessableEntityException("Ya existe un profesor con el id de persona: " + teacher.getId_persona());
     }
 
 
