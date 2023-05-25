@@ -1,14 +1,17 @@
 package formacion.block7crudvalidation.person.controller;
 
+
 import formacion.block7crudvalidation.exception.UnprocessableEntityException;
+import formacion.block7crudvalidation.feign.MyFeign;
 import formacion.block7crudvalidation.person.application.PersonService;
 import formacion.block7crudvalidation.person.controller.dto.PersonInputDto;
 import formacion.block7crudvalidation.person.controller.dto.PersonOutputDto;
 import formacion.block7crudvalidation.exception.EntityNotFoundException;
+import formacion.block7crudvalidation.teacher.controller.dto.SimpleTeacherOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.net.URI;
 
@@ -18,6 +21,9 @@ public class PersonController {
 
     @Autowired
     PersonService personService;
+
+    @Autowired
+    MyFeign feign;
 
     @GetMapping
     public Iterable<PersonOutputDto> getAllPeople() {
@@ -80,6 +86,11 @@ public class PersonController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/profesor/{idProfesor}")
+    public ResponseEntity<SimpleTeacherOutputDto> getProfesorFeign(@PathVariable int idProfesor) {
+       return feign.getTeacher(idProfesor);
     }
 
 }
