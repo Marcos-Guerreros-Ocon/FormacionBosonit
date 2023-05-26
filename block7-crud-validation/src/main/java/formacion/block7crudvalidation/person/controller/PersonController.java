@@ -89,8 +89,8 @@ public class PersonController {
     }
 
     @GetMapping("/profesor/{idProfesor}")
-    public ResponseEntity<SimpleTeacherOutputDto> getProfesorFeign(@PathVariable int idProfesor) {
-       return feign.getTeacher(idProfesor);
+    public SimpleTeacherOutputDto getProfesorFeign(@PathVariable int idProfesor) {
+      return feign.getTeacherById(idProfesor);
     }
 
 }

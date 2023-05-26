@@ -24,6 +24,7 @@ public class TeacherController {
     @GetMapping("/{id}")
     public ResponseEntity<SimpleTeacherOutputDto> getTeacherById(@PathVariable int id) {
         try {
+
             return ResponseEntity.ok().body(teacherService.getTeacherById(id));
         } catch (EntityNotFoundException e) {
             System.out.println(e);

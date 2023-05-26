@@ -7,7 +7,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 
 @SpringBootApplication
-@EnableFeignClients("formacion.block7crudvalidation.feign")
+@ImportAutoConfiguration({FeignAutoConfiguration.class})
+@EnableFeignClients
 public class Block7CrudValidationApplication {
 
 	public static void main(String[] args) {
