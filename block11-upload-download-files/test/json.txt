@@ -1,0 +1,45 @@
+// PERSON
+{
+    "usuario":"Marcos",
+    "password":"81dc9bdb52d04dc20036dbd8313ed055",
+    "name":"Macos",
+    "surname":"Guerreros",
+    "companyEmail":"marcos.guerreros@bosonit.com",
+    "personalEmail":"guerrerosoconm@gmail.com",
+    "city":"Logroño",
+    "active":true,
+    "createdDate": "24-05-2023 08:45:00" 
+}
+{
+    "usuario":"Javier",
+    "password":"81dc9bdb52d04dc20036dbd8313ed055",
+    "name":"Javier",
+    "surname":"Ruiz",
+    "companyEmail":"marcos.guerreros@bosonit.com",
+    "personalEmail":"guerrerosoconm@gmail.com",
+    "city":"Logroño",
+    "active":true,
+    "createdDate": "24-05-2023 08:45:00" 
+}
+
+// TEACHER
+{
+   "id_persona":1,
+   "branch":"Front",
+   "coments":"Hello"
+}
+
+// STUDENT
+{
+   "id_persona":1,
+   "num_hours_week":22,
+   "branch":"Front",
+   "coments":"Hello"
+}
+// ASIGNATURA
+{
+    "asignatura":"Test",
+    "coments":"Bye",
+    "initial_date":"24-05-2023 11:08:00",
+    "estudiantes":[1]
+}
