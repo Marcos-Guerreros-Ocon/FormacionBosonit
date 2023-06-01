@@ -1,0 +1,30 @@
+services:
+
+  docker_spring_boot:
+    container_name: docker-spring-boot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bosonit-spring-boot:1.0.0
+    ports:
+      - "8080:8080"
+    networks:
+      - bosonit-network
+
+  postgres_db:
+    container_name: postgres_test
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=contrasena
+      - POSTGRES_DATABASE=test
+    links:
+      - "docker_spring_boot"
+    image: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - bosonit-network
+
+networks:
+  bosonit-network:
+    driver: bridge
