@@ -62,7 +62,7 @@ public class PersonController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deletePerson(@RequestBody String id) {
+    public ResponseEntity<String> deletePerson(@PathVariable String id) {
         try {
             personService.deletePersonById(id);
             return ResponseEntity.ok().body("Persona con id: " + id + " ha sido borrada");
