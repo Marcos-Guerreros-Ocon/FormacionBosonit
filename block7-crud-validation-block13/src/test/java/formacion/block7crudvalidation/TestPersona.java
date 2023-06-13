@@ -37,6 +37,7 @@ public class TestPersona {
     }
 
     @Test
+    @DisplayName("Crear persona correcta")
     void crearPersona() throws Exception {
         PersonInputDto personInputDto = new PersonInputDto();
         agregarPersona(personInputDto);
@@ -44,7 +45,18 @@ public class TestPersona {
     }
 
     @Test
+    @DisplayName("Crear persona sin datos")
     void crearPersonaSinDatos() {
+        PersonInputDto personInputDto = new PersonInputDto();
+        personInputDto.setUsuario("NombreExtremadamenteLargo");
+        Assertions.assertThrows(UnprocessableEntityException.class, () -> {
+            personService.addPerson(personInputDto);
+        });
+    }
+
+    @Test
+    @DisplayName("Crear persona sin datos")
+    void crearPersonaConUsernameLargo() {
         PersonInputDto personInputDto = new PersonInputDto();
         Assertions.assertThrows(UnprocessableEntityException.class, () -> {
             personService.addPerson(personInputDto);
