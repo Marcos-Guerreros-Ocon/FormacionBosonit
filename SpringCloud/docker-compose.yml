@@ -1,0 +1,64 @@
+version: "3.2"
+
+services:
+  block16-viaje-cliente:
+    image: block16-viaje-cliente-image
+    build: ./ClienteViaje/block16-cliente-viaje
+    container_name: block16-viaje-cliente-contenedor
+    ports: 
+      - "8081:8081"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://block16-03-eureka-naming-server-contenedor:8761/eureka/
+    networks:
+      - red-cloud
+
+
+  block16-ticket:
+    image: block16-ticket-image
+    build: ./Ticket/block16-ticket
+    container_name: block16-ticket-contenedor
+    ports: 
+     - "8082:8082"
+    environment:
+      - restTemplate.url=http://block16-viaje-cliente-contenedor:8081/cliente/
+      - feignViaje.url=http://block16-viaje-cliente-contenedor:8081
+      - eureka.client.serviceUrl.defaultZone=http://block16-eureka-server-contenedor:8761/eureka/
+    networks:
+      - red-cloud
+
+
+
+  block16-eureka-server:
+    image: block16-eureka-server-image
+    build: ./block16-eureka-server
+    container_name: block16-eureka-server-contenedor
+    ports: 
+      - "8761:8761"
+    networks:
+      - red-cloud
+
+
+
+  block16-api-gateway:
+    image: block16-api-gateway-image
+    build: ./block16-api-gateway
+    container_name: block16-api-gateway-contenedor
+    ports: 
+      - "8080:8080"
+    environment:
+      - spring.cloud.gateway.routes[0].id=cliente
+      - spring.cloud.gateway.routes[0].uri=http://block16-viaje-cliente-contenedor:8081/
+      - spring.cloud.gateway.routes[0].predicates[0]=Path=/cliente/**
+      - spring.cloud.gateway.routes[1].id=trip
+      - spring.cloud.gateway.routes[1].uri=http://block16-viaje-cliente-contenedor:8081/
+      - spring.cloud.gateway.routes[1].predicates[0]=Path=/trip/**
+      - spring.cloud.gateway.routes[2].id=ticket
+      - spring.cloud.gateway.routes[2].uri=http://block16-ticket-contenedor:8082/
+      - spring.cloud.gateway.routes[2].predicates[0]=Path=/ticket/**
+      - eureka.client.serviceUrl.defaultZone= http://block16-eureka-server-contenedor:8761/eureka
+    networks:
+      - red-cloud
+    
+networks:
+  red-cloud:
+    driver: bridge
