@@ -1,18 +1,16 @@
 package formacion.block17springbatch.steps.step1;
 
-
-import formacion.block17springbatch.domain.Tiempo;
+import formacion.block17springbatch.tiempo.Tiempo;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.core.io.PathResource;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-public class ReaderCsv extends FlatFileItemReader<Tiempo> {
 
-    public ReaderCsv() {
+public class TiempoReader extends FlatFileItemReader<Tiempo> {
 
-        this.setResource(new PathResource("src/main/resources/tiempo.csv"));
-
+    public TiempoReader (){
+        this.setResource(new PathResource("src/main/resources/input.csv"));
         this.setLineMapper((line, lineNumber) -> {
             String[] fields = line.split(",");
 
@@ -20,13 +18,13 @@ public class ReaderCsv extends FlatFileItemReader<Tiempo> {
             Date fecha = dateFormat.parse(fields[1]);
 
             Tiempo tiempo = new Tiempo();
-            tiempo.setLocalidad(fields[0]);
+            tiempo.setCiudad(fields[0]);
             tiempo.setFecha(fecha);
             tiempo.setTemperatura(Integer.parseInt(fields[2]));
 
             return tiempo;
         });
+
+
     }
-
-
 }
